@@ -1,7 +1,8 @@
+import "./Navbar.scss"
 const Navbar = () => {
     return ( 
-        <div>
-            
+        <div className="navbar">
+            <h1>ReactJS TodoList <span>App</span></h1>
         </div>
      );
 }
