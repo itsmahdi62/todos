@@ -3,6 +3,7 @@ import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Footer/Footer';
 import { useRef , useState , useCallback , useEffect } from 'react';
 import {MdEdit , MdDelete} from "react-icons/md"
+import { FALSE } from 'node-sass';
 const App = ()  =>{
   const [todos,setTodos] = useState([])
   const [userInput, setUseInput] = useState([""])
@@ -41,7 +42,9 @@ const App = ()  =>{
   const saveEditTodoHandler = useCallback((id) => {
     setEditing(false)
     setTodoIndex(null)
+
     const oldTodos = [...todos]    
+
     const newTodos = oldTodos.map((todo) =>{
       if(todo.id === id){
         if(editText !== ''){
@@ -49,9 +52,8 @@ const App = ()  =>{
         }else{
           return todo
         }
-      } return true 
-
-      return todo
+      }
+       return todo 
     })
     setTodos(newTodos)
   },[editText , todos])
@@ -63,7 +65,7 @@ const App = ()  =>{
 
   useEffect(() =>{
     ref.current.focus()
-  })
+  },[])
   return (
     <div className="App">
         <Navbar />
@@ -78,15 +80,16 @@ const App = ()  =>{
                 />
                 <button onClick={addTodoHandler}>Add</button>
               </div>
-              {todos.length ===0 && <h2 style={{color:'white',fontWeight:'bold',marginTop:"15px"}}>Start Adding todos ...</h2>}
+              {todos.length === 0 && <h2 style={{color:'white',fontWeight:'bold',marginTop:"15px"}}>Start Adding todos ...</h2>}
               <div className='todos-container-parent'>
                 {todos.map((todo , index) =>{
                   return <div key={todo.id} className='todos-container-child'>
                   {editing &&  todoIndex !== index ? ( 
                       <div className='editer'>
-                        <input type='text' defaultValue={todo.text} onChange={setEditText((e) => e.target.value)}/>
+                        <input type='text' defaultValue={todo.text} onChange={(e) => setEditText(e.target.value) }/>
                         <button onClick={()=>saveEditTodoHandler(todo.id)}>Save</button>
-                      </div>) : (<>
+                      </div>) : 
+                      (<>
                         <h4 className='todo-text'>{todo.text}</h4>
                          <div className='iconContainer'>
                            <MdDelete onClick={() => deleteTodoHandler(todo.id)} style={{marginRight:'10px'}}/>
